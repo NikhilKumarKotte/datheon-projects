@@ -1,0 +1,27 @@
+TARGET STORE #0821
+1000 Nicollet Mall, Minneapolis, MN 55403
+Tel: (612) 555-0199
+
+Date: 26-Oct-2026  14:32:10
+Cashier: Sarah M.
+Register: 04  Trans #: 884102
+
+LOGITECH MX MASTER 3S MOUSE         $99.99
+USB-C CHARGING CABLE 2M              $19.99
+ANER MONSTER ENERGY DRINK 16OZ        $2.99
+ORGANIC DARK CHOCOLATE 85%           $3.50
+
+----------------------------------------
+SUBTOTAL                            $126.47
+MN STATE TAX 6.875%                   $8.70
+CITY TRANSIT TAX 0.5%                 $0.63
+----------------------------------------
+TOTAL                               $135.80
+
+PAYMENT METHOD: VISA CREDIT
+CARD NUMBER: ************3194
+AUTH CODE: 04981B
+AID: A0000000031010
+
+THANK YOU FOR SHOPPING AT TARGET!
+RETURN ITEMS WITHIN 90 DAYS WITH RECEIPT

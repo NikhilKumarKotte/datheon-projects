@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: structured-llm-extractor
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.extractor.api.app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DEFAULT_MODEL
+        value: gemini-3.5-flash-lite
+      - key: ENVIRONMENT
+        value: production

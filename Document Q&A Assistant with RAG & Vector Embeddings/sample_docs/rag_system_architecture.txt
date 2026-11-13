@@ -1,0 +1,16 @@
+# Technical Reference: Retrieval-Augmented Generation (RAG) Architecture
+
+## System Overview
+Retrieval-Augmented Generation (RAG) is an architectural pattern that bridges static large language models (LLMs) with dynamic, domain-specific external knowledge. By querying an external vector index before prompt submission, the model generates responses strictly grounded in verified enterprise context.
+
+## Ingestion Pipeline
+1. Document Parsing: Custom documents in PDF, TXT, DOCX, or Markdown format are ingested through dedicated format loaders (e.g., PyPDFLoader).
+2. Recursive Chunking: Texts are parsed into overlapping chunks using RecursiveCharacterTextSplitter. The default chunk size is 600 characters with an overlap of 100 characters to retain contextual continuity between boundaries.
+3. Embedding Generation: Each chunk is vectorized via dense embedding models such as `sentence-transformers/all-MiniLM-L6-v2` or `text-embedding-3-small`.
+4. Vector Storage: Dense representations along with chunk metadata (file path, page number, chunk index) are indexed into ChromaDB or FAISS.
+
+## Query and Synthesis Phase
+1. Similarity Search: User queries are converted into high-dimensional vectors and matched against the vector store using cosine similarity or Euclidean distance.
+2. Context Assembly: The top-K most relevant chunks (typically K=3 to K=5) are retrieved and injected into a strict system prompt.
+3. Grounded Synthesis: The LLM processes the injected context, generating a synthesized natural language answer and citing the exact source documents and page numbers.
+4. Hallucination Guardrails: If the similarity score falls below threshold or retrieved context lacks relevant information, the system explicitly reports that the answer is not present in the indexed documents.

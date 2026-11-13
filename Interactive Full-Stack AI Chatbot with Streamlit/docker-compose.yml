@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: omnistream-ai-app
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - DEFAULT_THEME=${DEFAULT_THEME:-midnight}
+      # If using the postgres service below, uncomment this line:
+      # - DATABASE_URL=postgresql+psycopg://omniuser:omnipassword@postgres:5432/omnichat
+      - DATABASE_URL=${DATABASE_URL:-}
+    volumes:
+      - app_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8501/_stcore/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: omnistream-ai-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: omniuser
+      POSTGRES_PASSWORD: omnipassword
+      POSTGRES_DB: omnichat
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omniuser -d omnichat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  app_data:
+  postgres_data:

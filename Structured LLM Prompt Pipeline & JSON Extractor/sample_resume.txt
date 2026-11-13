@@ -1,0 +1,16 @@
+Nikhil Kumar
+Email: nikhil.kumar@example.com
+Location: Hyderabad, India
+
+Summary:
+B.Tech student interested in AI/ML, data science, and Python development.
+
+Skills:
+Python, SQL, Pandas, Scikit-learn, FastAPI, Streamlit, Git
+
+Education:
+B.Tech in Artificial Intelligence and Machine Learning, Example Engineering College, expected 2027
+
+Projects:
+1. Food Price Comparison: Python tool to compare menu prices from food delivery platforms.
+2. Automated Document Verification Portal: FastAPI application to support document verification workflows.

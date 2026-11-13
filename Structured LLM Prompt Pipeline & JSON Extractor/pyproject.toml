@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "structured-llm-extractor"
+version = "1.0.0"
+description = "Enterprise-grade structured document extraction pipeline powered by Gemini and Pydantic."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Project Maintainer" }
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+    "google-genai>=2.0.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.28.0",
+    "python-multipart>=0.0.9",
+    "pypdf>=5.0.0",
+    "python-docx>=1.1.0",
+    "pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+    "httpx>=0.27.0",
+]
+
+[project.scripts]
+structured-extractor = "src.extractor.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --strict-markers"

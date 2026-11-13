@@ -1,0 +1,39 @@
+{
+  "warehouse": "Regional Hub - West",
+  "audit_date": "2026-10-01",
+  "currency": "USD",
+  "items": [
+    {
+      "sku": "EDGE-GW-500",
+      "name": "Industrial Edge AI Gateway",
+      "unit_cost": 450.00,
+      "retail_price": 899.00,
+      "stock_quantity": 340,
+      "reorder_threshold": 50
+    },
+    {
+      "sku": "OPTIC-SR-400G",
+      "name": "400G Optical Transceiver QSFP-DD",
+      "unit_cost": 280.00,
+      "retail_price": 520.00,
+      "stock_quantity": 1150,
+      "reorder_threshold": 200
+    },
+    {
+      "sku": "NVME-GEN5-15TB",
+      "name": "15.36TB Enterprise NVMe SSD",
+      "unit_cost": 1100.00,
+      "retail_price": 1850.00,
+      "stock_quantity": 85,
+      "reorder_threshold": 25
+    },
+    {
+      "sku": "RACK-PDU-30A",
+      "name": "Intelligent Switched 3-Phase PDU",
+      "unit_cost": 620.00,
+      "retail_price": 1050.00,
+      "stock_quantity": 42,
+      "reorder_threshold": 15
+    }
+  ]
+}

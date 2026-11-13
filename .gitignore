@@ -1,0 +1,52 @@
+# ==============================================================================
+# Root .gitignore for AI Multi-Project Monorepo
+# ==============================================================================
+
+# Python Virtual Environments
+**/.venv/
+**/venv/
+**/env/
+**/ENV/
+
+# Python Bytecode & Cache
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/*.so
+
+# Testing & Coverage
+**/.pytest_cache/
+**/.coverage
+**/htmlcov/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Environment Variables & Secrets (CRITICAL: Never commit API keys)
+**/.env
+**/.env.local
+**/.env.*
+!**/.env.example
+
+# Vector Database and SQLite Runtime Persistence
+**/data/*.db
+**/data/chroma_db/
+**/data/faiss_db/
+**/data/uploads/
+**/tests/test_store_data/
+
+# Generated Output Dumps
+**/*_output.json
+**/output.json
+
+# Logs & Runtime Diagnostics
+**/*.log
+**/logs/
+
+# Operating System & IDE Configs
+**/.DS_Store
+**/Thumbs.db
+**/desktop.ini
+**/.vscode/
+**/.idea/
+**/*.swp
+**/*.swo

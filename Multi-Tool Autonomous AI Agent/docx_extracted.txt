@@ -1,0 +1,474 @@
+A MAJOR PROJECT REPORT
+ON
+ROBUST BREAST ULTRASOUND CLASSIFICATION USING PREPROCESSING,
+K-MEANS SEGMENTATION & BALANCED DEEP
+CNN LEARNING ALGORITHM
+Submitted in partial fulfilment of the requirement for the award of Degree
+ of
+BACHELOR OF TECHNOLOGY
+IN
+     
+C
+SE- ARTIFICIAL INTELLIGENCE & MACHINE LEARNING
+BY
+R.POOJITHA
+21N71A6632
+A.GEETHIKA
+21N71A6601
+B.PRANAY
+ KUMAR
+21N71A6655
+Under the guidance of
+   Dr. Durga Prasad Kavadi
+(
+P
+rofessor & HOD)
+right
+272415
+0
+0
+ACCREDITED BY NAAC
+ INCLUDEPICTURE "https://drkist.edu.in/wp-content/uploads/2024/05/drkist-logo.png" \* MERGEFORMATINET 
+DEPARTMENT OF 
+CSE-
+ARTIFICIAL INTELLIGENCE & MACHINE LEARNING
+DRK 
+INSTITUTE 
+OF
+ 
+SCIENCE
+ AND TECHNOLOGY                    
+Affiliated to JNTUH HYDERABAD,
+Bowrampet
+, HYDERABAD
+-500043.
+1
+. 
+ABSTRACT
+Accurate and early brain 
+tumor
+ detection is crucial for successfully treating the disease. 
+Analyzing
+ Magnetic Resonance Imaging (MRI) scan is a powerful tool in modern technology for detecting abnormal brain tissues. It is difficult for radiologists to diagnose and categorize the 
+tumor
+ from multiple images. In contrast to the tedious and error-prone task of manually diagnosing a 
+tumor
+, machine learning algorithms have recently been implemented for processing medical images and data. To accurately classify brain MRI scans as "
+tumor
+" or "non-
+tumor
+," the project proposed a novel deep CNN involving morphological pre-processing and a CNN-based model. The proposed project conducted experiments on a dataset containing approximately 253 instances of patient data, including 155 brain MRI images of 
+tumor
+ 
+and 98 brain MRI images of non-
+tumor
+. 83% of the time, the experiment yielded reliable results. The proposed model was created to highlight the significance of machine learning in diagnostics and survival rates. In this method, overfitting was corrected with the aid of data augmentation. This work achieves regularisation by employing the dropout concept.
+2
+ 
+INTRODUCTION
+ Introduction
+A brain 
+tumor
+ is one of the most complex mechanisms in the human body, made up of billions of cells. Brain 
+tumor
+ is a mass that develops inside the brain and is directly affected by the tissues underlying the brain or skull. The mass is broken down into two malignant and the benign components. Such 
+tumors
+ grow irregularly in the brain and exert pressure.
+Accurate brain 
+tumor
+ MR images play a key role in clinical diagnosis and help to make decisions for the patient’s treatment. 
+Conventional classification methods in machine learning consist usually of confined steps including pre-processing, extraction of features, selection of features, reduction of dimensions, and classification. The use of traditional methods of machine learning in this context is a challenging task for a non-expert. Deep learning algorithms and in particular, CNN has shown remarkable success in bioinformatics, though relatively very few methods have been applied due to numerous inherent challenges.
+We can identify, extract interesting and useful relationships and patterns from the data by using data mining techniques. ML (machine learning) and data mining methods are being used successfully at an early stage for brain 
+tumor
+ identification or detection. 
+In our project, we deployed a CNN-based classifier, gathered from 
+kaggle
+ that works on the classification principle of the given dataset. The model consists of three consecutive 2D convolution layers each having 3x3 kernels. A random division of database images into 80 percent and 20 percent was made, respectively, to shape the training set and 10 percent for the validation set from the Testing set.
+3
+. 
+PROPOSED METHODOLOGY
+Convolution Neural Network:
+Classifier models can be divided into two categories respectively which are generative models based on hand-crafted features and discriminative models based on traditional learning such as support vector machine (SVM), Random Forest (RF), and Convolutional Neural Network (CNN). One difficulty with methods based on hand-crafted features is that they often require the computation of a large number of features to be accurate when used with many traditional machine learning techniques. This can make them slow to compute and expensive memory-wise. More efficient techniques employ lower numbers of features, using dimensionality reduction like PCA (
+Principle
+ Component Analysis) or feature selection methods, but the reduction in the number of features is often at the cost of reduced accuracy. Brain 
+tumor
+ segmentation employs discriminative models because, unlike generative 
+modeling
+ approaches, these approaches exploit little prior knowledge on the brain's anatomy and instead rely mostly on the extraction of [a large number of] low-level image features, directly 
+modeling
+ the relationship between these features and the label of a given voxel. 
+In our project, we have used the Convolutional Neural Network architecture for Brain 
+tumor
+ Detection and Classification.
+Convolutional neural network processes closely knitted data used for image classification, image processing, face detection, etc. It is a specialized 2D structure with specialized NN 
+analyzing
+ RGB layers of an image. Unlike others, it analyses one image at a time, identifies and extracts important features, and uses them to classify the image. 
+ConvolutionalNeural
+ Networks (
+ConvNets
+) automatically learn mid-level and high-level representations or abstractions from the input training data. The main building block used to construct a CNN architecture is the convolutional layer. It also consists of several other layers, some of which are described as below: 
+Input Layer-It takes in the raw pixel value of the input image. 
+Convolutional Layer- It is the first layer to extract features from an input image.
+left
+1203960
+0
+0
+Convolution preserves the relationship between pixels by learning image features using small squares of input data. It is a mathematical operation that takes two inputs such as an image matrix and a filter or kernel to generate a feature map Convolution of an image with different filters can perform operations such as edge detection, blur, and sharpen by applying filters.
+Activation Layer-It produces a single output based on the weighted sum of inputs and decides whether the neuron is to be fire or not.
+ReLU
+ stands for Rectified Linear Unit for a non-linear operation. The output is ƒ(x) = max(
+0,x).
+ReLU's
+ purpose is to introduce non-linearity in our 
+ConvNet
+. Since the real-world data would want our 
+ConvNet
+ to learn would be non-negative linear values. There are other nonlinear functions such as tanh or sigmoid that can also be used instead of 
+ReLU
+.
+Pooling Layer-Pooling layers section would reduce the number of parameters when the images are too large. Spatial pooling (also called subsampling or 
+downsampling
+) reduces the dimensionality of each map but retains important information. Spatial Pooling can be of different types:
+Max Pooling – taking the largest element in the feature map.
+Flatten- It converts the input data into 1 Dimensional array. we flatten the output of the convolution layer and it is connected to a fully connected layer.
+ Fully Connected Layer-The layer we call the FC 
+layer,
+ we flattened our matrix into a vector and feed it into a fully connected layer like a neural network. the feature map matrix will be converted as a column vector (x1, x2, x3, …). With the fully connected layers, we combined these features to create a model. For classifying input images into various classes based on the training set.
+Dropout Layer-It prevents nodes in a network from co-adapting to each other and avoids overfitting.
+Advantages:
+1. It is considered the best ml technique for image classification due to its high accuracy. 
+2. Image pre-processing required is much less compared to other algorithms.
+ 3. It is used over feed-forward neural networks as it can be trained better in the case of complex images to have higher accuracies. 
+4. It reduces images to a form that is easier to process without losing features which are critical for a good prediction by applying relevant filters and reusability of weights
+ 5. It can automatically learn to perform any task just by going through the training data i.e. there no need for prior knowledge.
+ 6. There is no need for specialized hand-crafted image features like that in the case of SVM, Random Forest, etc.
+Disadvantages:
+1. It requires a large training data.
+2. It requires an appropriate model.
+3. It is time-consuming. 
+4. It is a tedious and exhaustive procedure.
+5. While convolutional networks have already existed for a long time, their success was limited due to the size of the considered network.
+3
+.1 
+System requirements
+3
+.1.1 
+Software Requirements
+The software requirements will consist of the essential components required for project development. The developer who works on the product will get all the answers which are required for the project development. The software requirements help predict the project cost and helpful in gathering all the tools for project development. 
+The software requirements for this project are as follows:
+Operating System: Windows10
+Software packages: Python, NumPy, 
+Tensorflow
+, 
+Keras,sklearn
+, Computer vision, utils, matplotlib.
+Tools Required: Google 
+colab
+3
+.1.2 
+Hardware Requirements
+The hardware requirements will give information about the resources required for the implementation of the project. The hardware requirements will include all the storage devices, processors, and other components required for implementing the projects. These requirements also give an idea to the developer that the specification is required for the project to run without any failures.
+The hardware requirements for this project are as follows:
+Operating System:  Windows 11 pro
+Processor:Intel
+(R) 
+Core(
+TM) i5-8250U CPU @ 1.60GHz   1.80 GHz
+Number of CPU Cores: 4       
+CPU Base Clock:  1.8Ghz      
+RAM: 8GB DDR4 
+Graphics Card Memory:  4GB 
+4. 
+LITERATURE SURVEY
+In modern years, several methods have been implemented to automatically segment MRI brain 
+tumors
+. These methods can be divided into two categories respectively handcrafted features and classifier methods based on traditional learning such as support vector machine (SVM) and random forest. The second method is based on fully automatic methods based on deep learning using the Convolutional Neural Network (CNN). The first category method 
+use
+ manually separated features and it is given as input to classifiers. After determination of hand-crafted features. The classifiers do not modify the features during training. But in the second category the features, specifications can be adapted to do the specific task of training data. Currently, deep neural network 
+CNN's
+ mostly used in the computer vision community. 
+Today’s recent medical imaging research faces the challenge of detecting brain 
+tumor
+ through Magnetic Resonance Images (MRI). Broadly, to produce images of soft tissue of human body, MRI images are used by experts. For brain 
+tumor
+ detection, image segmentation is required. Mechanizing this process is a tricky task because of the high diversity in the appearance of 
+tumor
+ tissues among different patients and in many cases similarity with the usual tissues. Physical segmentation of medical image by the radiologist is a monotonous and prolonged process. MRI is a highly developed medical imaging method providing rich information about the person soft-tissue structure. There are varied brain 
+tumor
+ recognition and segmentation methods to detect and segment a brain 
+tumor
+ from MRI images. This is well thought-out to be one of the most significant but tricky part of the process of detecting brain 
+tumor
+. A variety of algorithms were developed for segmentation of MRI images by using different tools and methods. 
+Alternatively
+ this paper presents a comprehensive review of the methods and techniques used to detect brain 
+tumor
+ through MRI images.
+Pereira et al., (2016) described gliomas as one of the aggressive types of a brain 
+tumor
+ which leads to a short lifetime with their highest grade. Since the MRI techniques produce a large amount of data, manual segmentation needs reasonable time. The automatic brain 
+tumor
+ is one of the challenging tasks due to the large, spatial, and structural variability among the brain. The author suggested a new segmentation method based on a convolutional neural network with small 3×3 kernels. The small kernel helps the deep architecture to avoid overfitting by assigning a fewer number of weights in the network. And also using intensity normalization as a pre
+-
+processing along with a convolutional neural network provides effective segmentation. Further, the proposed work is implemented BRATS 2013 database.
+Isin et al., (2016) discussed that segmentation of brain 
+tumor
+ is one of the challenging tasks in the medical field. The lifetime of the patient is improved by early diagnosis of brain 
+tumor
+. Manual segmentation of brain 
+tumor
+ for a large amount of data is a time-consuming process. Hence there is a need for automatic segmentation. Nowadays the automatic segmentation uses deep learning techniques for segmentation. It provides efficient segmentation for a large amount of MRI-based image data. The article reviewed the state-of-the-art methods of deep learning. The conventional automatic segmentation methods need prior knowledge of probabilistic maps or selecting highly representative features for classifiers, which is a challenging task. 
+But,
+ the convolutional neural network method automatically learns the corresponding complex features for both healthy brain tissues and 
+tumor
+ tissues from multi modal MRI brain images.
+Chinmayi et al., (2017) conferred a method for MRI brain 
+tumor
+ segmentation and classification using 
+Bhaltacharya
+ co-efficient. The unwanted skull portions were removed using an anisotropic diffusion filter. Further, it uses a 
+fast bounding
+ box algorithm to extract the 
+tumor
+ area. It uses deep learning CNN to train the MRI brain 
+tumor
+ image. Finally, the results of the proposed method are compared in terms of accuracy, similarity index, PSNR, and MSE. The results will help the radiologist to identify the size and position of a 
+tumor
+.
+Wang et al., (2017) recommended that a convolutional neural network provides the 
+state of the art
+ performance for automatic medical image segmentation. 
+But,
+ it does not provide robust results for clinical use. It has the limitation to the lack of generalizability of previously unseen object classes. The problem is rectified by a novel deep learning-based interactive segmentation framework by relating CNN into a bounding box and scribble-based segmentation pipeline. The proposed method makes the CNN model adaptive to a specific test image, which may be unsupervised or supervised.
+Haveri et al., (2017) illustrated a brain 
+tumor
+ segmentation using deep neural networks to glioblastomas (both low and high grades) MRI images. This kind of brain 
+tumor
+ appears anywhere in the brain and also it has any shape, size, and contrast. The article utilizes the convolutional neural network as a machine learning algorithm. It exploits both local and global features for 
+tumor
+ segmentation. The author uses the BRATS dataset for research work.
+Khawaldeh
+ et al., (2018) offered a widespread machine learning technique for medical image classification and segmentation. The approach uses Conv net for classifying brain medical images into healthy and unhealthy brain images. The implemented method classifies the brain 
+tumor
+ into low grades and high grades. It uses Alex 
+krizhousky
+ network deep learning 
+architecture to classify the MRI brain 
+tumor
+. The 
+tumor
+ classification is performed on the whole image rather than pixels.
+Cui et al., (2018) developed a novel automatic segmentation based on a cascaded deep learning convolutional neural network. It has two subnetworks; a 
+tumor
+ localization Network (TLN) and an intratumor classification network (ITCN). The 
+tumor
+ region from the MRI brain slice is separated using a 
+tumor
+ localization network and ITCN helps to label the defined 
+tumor
+ region into multiple sub-regions. The work was performed on multimodal brain 
+tumor
+ segmentation (BRATS, 2015) dataset, which had 220 high-grade glioma (HGG) and 54 low-grade gliomas (LGG) cases. The evaluation can be performed by dice coefficient, positive predictive value (PPV), and sensitivity.
+In, the Fuzzy C-Means (FCM) segmentation is applied to separate the 
+tumor
+ and non-
+tumor
+ region of the brain. Also, wavelet features are extracted by using multilevel Discrete Wavelet Transform (DWT). Finally, Deep Neural Network (DNN) is incorporated for brain 
+tumor
+ classification with high accuracy.  This technique is compared with KNN, Linear Discriminant Analysis (LDA), and Sequential Minimal Optimization (SMO) classification methods. An accuracy rate of 96.97% in the analysis of DNN based brain 
+tumor
+ classification but the complexity is very high and performance is very poor.
+Zhou et al used a pre-trained InceptionV3 model for identifying benign and malignant renal 
+tumors
+ on CT images.
+The proposed classification of brain 
+tumors
+ was based on two-dimensional images, not 3-D volume because in most clinical practices 2-D slices with a large slice gape are the acquired and available MRI images. To evaluate the 
+performance
+ it used five-fold cross-validation. The result is the average accuracy of the five-fold test dataset in classification. The proposed block-wise fine-tuning transfer learning strategy suggests an alternative approach that is different from using pre-trained CNN as an off-the-shelf feature extractor (without training) that trains the separate classification method (such as SVM, k-NN, boosted trees, random forests, and decision trees). It also demonstrates the ability to learn from natural images to medical brain MR images.
+A new automatic segmentation based on the cascaded deep learning convolutional neural network has been developed by Cui et al. It contains intra 
+tumor
+ classification and 
+tumor
+ localization networks. The MRI 
+tumor
+ region is segregated via 
+tumor
+ localization and the intratumor classification network can mark the identified 
+tumor
+ area in several sub-regions. The research was conducted in the multimodal segmentation of brain 
+tumors
+ which included 
+220 cases of high grades glioma and 54 cases of low-grade glioma. The assessment can be done by positive predictive value, sensitivity, and dice coefficient.
+Sharma et al devised Multi-Layer Perceptron and Naive Bayes to detect 
+tumors
+. The feature set passed to Multi-Layer Perceptron and Naive Bayes are texture features based on Gray Level Co-occurrence matrix (GLCM) for identifying the 
+tumor
+. The k-mean clustering segmentation technique is proposed in which utilized the morphological filters to detect the 
+tumor
+ region.
+The brain 
+tumor
+ is one of the most dangerous diseases occurring commonly among human beings, so the study of brain 
+tumors
+ is very crucial. Bhattacharyya and Kim have proposed an image segmentation technique to identify the 
+tumor
+ from the brain MRI. Several existing thresholding techniques have produced a 
+different results
+ in each image. Thus, to produce a satisfactory result on brain 
+tumor
+ images, they have proposed a technique, where the detection of the 
+tumor
+ was done uniquely.
+Devkota et al established the whole segmentation process based on Mathematical Morphological Operations and spatial FCM algorithm which improves the computation time, but the proposed solution has not been tested up to the evaluation stage and outcomes as- Detects cancer with 92% and classifier has an accuracy of 86.6%
+.
+5. OBJECTIVES
+5.
+1
+ 
+Objectives
+To Develop a novel Robust Deep learning Model for addressing the issues. 
+To create a new model for early tumor detection. 
+To make it more precise and less prone to false positives and negatives 
+In an effort to lessen the overfitting
+.
+REFERENCES
+[
+1]Prabhu
+ LAJ, Jayachandran A. Mixture model segmentation system for parasagittal meningioma brain 
+tumor
+ classification based on hybrid feature vector. J Med 
+Syst
+ 2018;42(12):251. https://doi.org/10.1007/s10916-018-1094-3.
+[2] Arasi PRE, Suganthi M. A clinical support system for brain 
+tumor
+ classification using soft computing techniques. J Med 
+Syst
+ 2019;43(5):144. https://doi.org/10.1007/ s10916-019-1266-9. 
+[3] Yildirim M, Çinar A. Classification of white blood cells by deep learning methods for diagnosing disease. Revue 
+d'IntelligenceArtificielle
+ 2019;33(5):335–40. https:// doi.org/10.18280/ria.330502. 
+[4] Afshar, P., Mohammadi, A., &
+Plataniotis
+, K. N. (2018, October). Brain 
+tumor
+ type classification via capsule networks. In 2018 25th IEEE International Conference on Image Processing (ICIP) (pp. 3129-3133). IEEE. 
+[5] Saxena, P., Maheshwari, A., & Maheshwari, S. (2019). Predictive 
+modeling
+ of brain 
+tumor
+: A Deep learning approach. 
+arXiv
+ preprint arXiv:1911.02265. 
+[6] Shahzadi, I., Tang, T. B., 
+Meriadeau
+, F., &
+Quyyum
+, A. (2018, December). CNNLSTM: Cascaded framework for brain Tumour classification. In 2018 IEEE-EMBS Conference on Biomedical Engineering and Sciences (IECBES) (pp. 633-637). IEEE.
+ [7] El Abbadi NK, Kadhim NE. Brain 
+tumor
+ classification based on singular value decomposition. Brain 2016;5(8). 
+[8] Mohsen H, El-
+Dahshan
+ ESA, El-
+Horbaty
+ ESM, Salem ABM. Classification using deep learning neural networks for brain 
+tumors
+. Future 
+Comput
+ Inf J 2018;3(1):68–71. 
+[9] Charfi S, 
+Lahmyed
+ R, Rangarajan L. A novel approach for brain 
+tumor
+ detection using neural network. Int J Res EngTechnol
+2014;2:93
+–104. 
+[10] Vani, N., Sowmya, A., &Jayamma, N. (2017). Brain 
+Tumor
+ Classification using Support Vector Machine. International Research Journal of Engineering and Technology (IRJET), 4. 
+[11] Gupta T, Gandhi TK, Gupta RK, Panigrahi BK. Classification of patients with 
+tumor
+ using MR FLAIR images. Pattern 
+Recogn
+ Lett 2017. 
+[12] Citak-Er F, Firat Z, 
+Kovanlikaya
+ I, Ture U, Ozturk-Isik E. Machine-learning in grading of gliomas based on multi-parametric magnetic resonance imaging at 3T. 
+ComputBiol
+ Med 2018;99:154–60. 
+[13] Krizhevsky, A., 
+Sutskever
+, I., & Hinton, G. E. (2012). 
+Imagenet
+ classification with deep convolutional neural networks. In Advances in neural information processing systems (pp. 1097-1105). 
+[14] K. He X. Zhang S. Ren J. Sun. (2016). Deep residual learning for image recognition. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 770-778). 
+[15] G. Huang Z. Liu L. Van Der 
+Maaten
+ K.Q. (2017
+).Weinberger
+ Densely connected convolutional networks. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 4700-4708).
+ [16] C. Szegedy W. Liu Y. Jia P. 
+Sermanet
+ S. Reed D. Anguelov et al. (2015). Going deeper with convolutions. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 1-9).
+ [17] C. Szegedy V. 
+Vanhoucke
+ S. Ioffe J. 
+Shlens
+ Z. 
+Wojna
+ (2016). Rethinking the inception architecture for computer vision. In Proceedings of the IEEE conference on computer vision and pattern recognition (pp. 2818-2826).
+ [18] Kaggle, 
+https://www.kaggle.com/datasets
+. 
+[19] E. 
+Cengil
+ A. Çınar E. Özbay (2017, October). Image classification with caffe deep learning framework. In 2017 International Conference on Computer Science and Engineering (UBMK) (pp. 440-444). IEEE. DOI: 10.1109/UBMK.2017.8093433. 
+[20] M. Yildirim A. Çinar (2019, September). Simultaneously Realization of Image Enhancement Techniques on Real-Time 
+Fpga
+. In 2019 International Artificial Intelligence and Data Processing Symposium (IDAP) (pp. 1-6). IEEE.DOI: 10.1109/ IDAP.2019.8875959.
+ [21] Pei JY, Shan P. A micro-expression recognition algorithm for students in classroom learning based on convolutional neural network. 
+Traitement
+ du Signal 2019;36(6):557–63. [22] Liew SS, Khalil-Hani M, 
+Bakhteri
+ R. Bounded activation functions for enhanced training stability of deep neural networks on visual 
+patternre
+ cognition problems. Neurocomputing 
+2016;216:718
+–34. 
+https://doi.org/10.1016/j.neucom.2016.08. 037
+. 
+[23] Salimans, T., &Kingma, D. P. (2016). Weight normalization: A simple reparameterization to accelerate training of deep neural networks. In Advances in neural information processing systems (pp. 901-909). 
+[24] Gao W, Zhou ZH. Dropout 
+rademacher
+ complexity of deep neural networks. Sci China Inform Sci 2016;59(7):072104https://doi.org/10.1007/s11432-015-5470-z.
+ [25] 
+CireşAn
+ D, Meier U, Masci J, 
+Schmidhuber
+ J. Multi-column deep neural network for traffic sign classification. Neural Networks 
+2012;32:333
+–8. 
+https://doi.org/10. 1016/j.neunet.2012.02.023
+. 
+[26] Montavon G, Samek W, Müller KR. Methods for interpreting and understanding deep neural networks. Digital Signal Process 
+2018;73:1
+–15. 
+https://doi.org/10. 1016/j.dsp.2017.10.011
+. 
+[27] P. Covington J. Adams E. Sargin (2016, September). Deep neural networks for 
+youtube
+ recommendations. In Proceedings of the 10th ACM conference on recommender systems (pp. 191-198). 
+https://doi.org/10.1145/2959100.2959190
+. 
+[28] 
+Matlab,www.mathworks.com/products/matlab.html
+. 
+[29] Nixon, M., Mahmoodi, S., &Zwiggelaar, R. (Eds.). (2018). Medical Image Understanding and Analysis: 22nd Conference, MIUA 2018, Southampton, UK, July 9-11, 2018, Proceedings (Vol. 894). Springer. 
+https://doi.org/10.1007/978-3-319- 95921-4
+. 
+[30] Toraman S, Tuncer SA, 
+Balgetir
+ F. Is it possible to detect cerebral dominance via EEG signals by using deep learning? Med Hypotheses 
+2019;131:109315
+https://doi. org/10.1016/j.mehy.2019.109315.

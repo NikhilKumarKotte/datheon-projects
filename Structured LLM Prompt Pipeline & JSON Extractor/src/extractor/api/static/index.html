@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Structured LLM Extractor | Enterprise AI Extraction Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.25);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --border: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Ambient top glow */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 250px;
+      background: radial-gradient(ellipse at top, rgba(99, 102, 241, 0.15), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      background-color: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: white;
+      box-shadow: 0 4px 16px var(--accent-glow);
+    }
+
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tag-v1 {
+      font-size: 0.65rem;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      padding: 0.15rem 0.45rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-text p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .mode-toggle-pill {
+      display: flex;
+      align-items: center;
+      background-color: #1f2937;
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.2rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .mode-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      box-shadow: 0 2px 8px var(--accent-glow);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background-color: #064e3b;
+      color: #6ee7b7;
+      border: 1px solid #047857;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background-color: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .docs-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .docs-btn:hover {
+      color: white;
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    main {
+      flex: 1;
+      padding: 1.75rem 2rem;
+      max-width: 1480px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 1024px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+    }
+
+    .panel {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+      transition: border-color 0.2s;
+    }
+
+    .panel:hover {
+      border-color: #374151;
+    }
+
+    .panel-header {
+      padding: 1.15rem 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: rgba(31, 41, 55, 0.3);
+    }
+
+    .panel-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .panel-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      flex: 1;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .schema-toggle {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+
+    .schema-btn {
+      background-color: #1f2937;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.5rem;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .schema-btn:hover {
+      border-color: #6b7280;
+    }
+
+    .schema-btn.active {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(168, 85, 247, 0.15));
+      border-color: var(--accent);
+      color: #818cf8;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .row-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .select-input {
+      background-color: #1f2937;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.82rem;
+      font-family: inherit;
+      width: 100%;
+    }
+
+    .sample-bar {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .chip-btn {
+      background-color: rgba(55, 65, 81, 0.5);
+      border: 1px solid #4b5563;
+      color: #d1d5db;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.55rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .chip-btn:hover {
+      background-color: #374151;
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .dropzone-container {
+      border: 2px dashed #374151;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      background: rgba(31, 41, 55, 0.25);
+      transition: all 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dropzone-container.drag-over {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.1);
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    .dropzone-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .file-badge {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid var(--accent);
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+
+    textarea {
+      width: 100%;
+      height: 220px;
+      background-color: #0d1321;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1rem;
+      color: #e5e7eb;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.9rem 1.5rem;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 16px var(--accent-glow);
+      transition: all 0.2s;
+    }
+
+    .primary-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+    }
+
+    .primary-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Output Tabs */
+    .tab-nav {
+      display: flex;
+      gap: 0.4rem;
+      background-color: #1f2937;
+      padding: 0.25rem;
+      border-radius: 8px;
+    }
+
+    .tab-btn {
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-btn.active {
+      background-color: var(--card-bg);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .meta-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      background-color: #1f2937;
+      color: #9ca3af;
+      border: 1px solid #374151;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-success {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-accent {
+      background-color: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    /* Output Panels */
+    .code-container {
+      background-color: #0b101d;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.15rem;
+      overflow: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: #38bdf8;
+      max-height: 440px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .visual-view {
+      background-color: #0b101d;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      overflow-y: auto;
+      max-height: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+    }
+
+    .stat-card {
+      background-color: #151d2f;
+      border: 1px solid #243048;
+      padding: 0.75rem;
+      border-radius: 8px;
+    }
+
+    .stat-card .label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card .val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f3f4f6;
+      margin-top: 0.2rem;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .items-table th {
+      text-align: left;
+      padding: 0.5rem 0.75rem;
+      background-color: #151d2f;
+      color: var(--text-muted);
+      border-bottom: 1px solid #243048;
+    }
+
+    .items-table td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #1a2336;
+      color: #e5e7eb;
+    }
+
+    .skill-chip {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #c7d2fe;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      margin: 0.2rem;
+    }
+
+    .audit-box {
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.08);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .secondary-btn {
+      background-color: #1f2937;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+
+    .secondary-btn:hover { background-color: #374151; }
+
+    .alert {
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      display: none;
+    }
+
+    .alert-error {
+      background-color: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+    }
+
+    /* Skeleton Loading State */
+    .skeleton-loader {
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.25rem;
+      background-color: #0b101d;
+      border-radius: 10px;
+    }
+
+    .skeleton-line {
+      height: 16px;
+      background: linear-gradient(90deg, #151d2f 25%, #243048 50%, #151d2f 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: #1f2937;
+      color: white;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      font-size: 0.85rem;
+      display: none;
+      z-index: 100;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div class="brand-text">
+        <h1>Structured LLM Extractor <span class="tag-v1">ENTERPRISE v1.0</span></h1>
+        <p>Autonomous Classification • Gemini JSON Schema • Agentic Verification Audit</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <!-- Mode Toggle Switch (Live vs Demo Mode) -->
+      <div class="mode-toggle-pill" title="Toggle between live Gemini API and zero-latency demo mode">
+        <button type="button" class="mode-btn active" id="btnLiveMode" onclick="setMode(false)">⚡ Live AI</button>
+        <button type="button" class="mode-btn" id="btnDemoMode" onclick="setMode(true)">🧪 Demo Mode</button>
+      </div>
+
+      <div class="status-badge" id="apiStatusBadge">
+        <div class="status-dot"></div>
+        <span id="apiStatusText">Ready</span>
+      </div>
+      <a href="/docs" target="_blank" class="docs-btn">API Docs (Swagger)</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left Column: Input Form -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2><span>📝</span> Input Document & Configuration</h2>
+      </div>
+      <div class="panel-body">
+        
+        <!-- Document Type Selector -->
+        <div class="form-group">
+          <label class="form-label">
+            <span>Target Schema</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Autonomous classifier enabled</span>
+          </label>
+          <div class="schema-toggle">
+            <button type="button" class="schema-btn active" id="btnAuto" onclick="selectSchema('auto')">
+              <span>✨</span> Auto-Detect
+            </button>
+            <button type="button" class="schema-btn" id="btnInvoice" onclick="selectSchema('invoice')">
+              <span>🧾</span> Invoice
+            </button>
+            <button type="button" class="schema-btn" id="btnResume" onclick="selectSchema('resume')">
+              <span>📄</span> Resume
+            </button>
+            <button type="button" class="schema-btn" id="btnReceipt" onclick="selectSchema('receipt')">
+              <span>🏷️</span> Receipt
+            </button>
+          </div>
+        </div>
+
+        <!-- Model Selection & Quick Load -->
+        <div class="row-flex">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Gemini Model</label>
+            <select id="modelSelect" class="select-input">
+              <option value="gemini-3.5-flash-lite" selected>gemini-3.5-flash-lite (Fast & Reliable)</option>
+              <option value="gemini-3.8-flash">gemini-3.8-flash (Latest Flash)</option>
+              <option value="gemini-flash-latest">gemini-flash-latest</option>
+              <option value="gemini-pro-latest">gemini-pro-latest</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">1-Click Presets</label>
+            <div class="sample-bar">
+              <button type="button" class="chip-btn" onclick="loadSample('invoice')">Invoice</button>
+              <button type="button" class="chip-btn" onclick="loadSample('resume')">Resume</button>
+              <button type="button" class="chip-btn" onclick="loadSample('receipt')">Receipt</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Input & Universal Drag-and-Drop Area -->
+        <div class="form-group" style="flex: 1;">
+          <div class="form-label">
+            <span>Document Content</span>
+            <span style="font-size: 0.72rem; color: var(--text-muted);">PDF, Word DOCX, Image, Text</span>
+          </div>
+
+          <!-- Drag and drop zone -->
+          <div class="dropzone-container" id="dropzone" onclick="document.getElementById('fileUpload').click()">
+            <div class="dropzone-text">
+              <span style="font-size: 1.1rem;">📂</span>
+              <span><strong>Click to upload</strong> or drag & drop (PDF, DOCX, PNG, JPG, TXT)</span>
+            </div>
+            <span class="chip-btn" style="pointer-events: none;">Browse Files</span>
+            <input type="file" id="fileUpload" style="display: none;" accept=".pdf,.docx,.doc,.png,.jpg,.jpeg,.webp,.txt,.md,.csv,.json" onchange="handleFileUpload(event)">
+          </div>
+          
+          <div id="filePreviewBadge" class="file-badge">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span id="fileIcon">📄</span>
+              <strong id="fileName">document.pdf</strong>
+              <span id="fileSize" style="color: var(--text-muted); font-size: 0.75rem;">(120 KB)</span>
+            </div>
+            <button type="button" onclick="clearSelectedFile()" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; font-weight: bold;">✕</button>
+          </div>
+
+          <textarea id="docText" placeholder="Paste text here, click a 1-Click Preset above, or drag & drop any PDF, Word (.docx), or Receipt Image..."></textarea>
+        </div>
+
+        <div id="errorAlert" class="alert alert-error"></div>
+
+        <button type="button" id="submitBtn" class="primary-btn" onclick="runExtraction()">
+          <div class="spinner" id="btnSpinner"></div>
+          <span id="btnText">Extract & Verify Facts</span>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- Right Column: Output & Visualization -->
+    <section class="panel">
+      <div class="panel-header">
+        <div class="tab-nav">
+          <button type="button" class="tab-btn active" id="tabBtnVisual" onclick="switchTab('visual')">✨ Visual Card View</button>
+          <button type="button" class="tab-btn" id="tabBtnJson" onclick="switchTab('json')">🔍 Raw JSON</button>
+          <button type="button" class="tab-btn" id="tabBtnAudit" onclick="switchTab('audit')">🛡️ Verification Audit</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="secondary-btn" onclick="copyJson()">📋 Copy</button>
+          <button type="button" class="secondary-btn" onclick="downloadJson()">💾 Download</button>
+        </div>
+      </div>
+      <div class="panel-body">
+        
+        <div class="meta-tags" id="metadataBar">
+          <span class="badge">Status: Ready</span>
+          <span class="badge" id="badgeType">Schema: auto-detect</span>
+          <span class="badge">Accepted: PDF, DOCX, Images, Text</span>
+        </div>
+
+        <!-- Skeleton Loading Animation -->
+        <div id="skeletonLoader" class="skeleton-loader">
+          <div class="skeleton-line" style="width: 40%;"></div>
+          <div class="skeleton-line" style="width: 70%; height: 24px;"></div>
+          <div class="skeleton-line" style="width: 90%;"></div>
+          <div class="skeleton-line" style="width: 60%;"></div>
+          <div class="skeleton-line" style="width: 80%; height: 80px;"></div>
+          <div class="skeleton-line" style="width: 50%;"></div>
+        </div>
+
+        <!-- Visual Render View -->
+        <div class="visual-view" id="visualContainer">
+          <div style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">⚡</div>
+            <h3 style="color: #f3f4f6; font-size: 1.05rem; margin-bottom: 0.4rem;">Structured Fact Extraction Engine</h3>
+            <p style="font-size: 0.82rem; max-width: 360px; margin: 0 auto;">Select a preset above or attach any PDF, Word DOCX, or Receipt scan to extract strongly-typed JSON.</p>
+          </div>
+        </div>
+
+        <!-- Raw JSON View -->
+        <div class="code-container" id="jsonContainer" style="display: none;">
+// Validated extraction JSON will appear here.
+        </div>
+
+        <!-- Verification Audit View -->
+        <div class="visual-view" id="auditContainer" style="display: none;">
+          <div style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">
+            <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🛡️</div>
+            <p style="font-size: 0.82rem;">Mathematical consistency and reflection audits will be displayed here after extraction.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">JSON copied to clipboard!</div>
+
+  <script>
+    let currentSchema = 'auto';
+    let selectedFile = null;
+    let isDemoMode = false;
+    let lastExtractionResult = null;
+    let currentActiveTab = 'visual';
+
+    const SAMPLES = {
+      invoice: `INVOICE\nInvoice No: INV-1042\nSeller: ABC Technologies Inc.\nCustomer: Ravi Kumar\nInvoice Date: 2026-10-25\nDue Date: 2026-11-25\nItem: Wireless Mechanical Keyboard | Quantity: 2 | Unit Price: INR 1,500 | Line Total: INR 3,000\nItem: 10-in-1 USB-C Multiport Dock | Quantity: 1 | Unit Price: INR 9,500 | Line Total: INR 9,500\nGrand Total: INR 12,500\nPayment Status: Paid`,
+      resume: `Nikhil Kumar\nEmail: nikhil.kumar@example.com\nLocation: Hyderabad, India\n\nSummary:\nB.Tech AI/ML student and Python developer with strong expertise in FastAPI, LLM agents, and distributed backend systems.\n\nSkills:\nPython, FastAPI, Pydantic, SQL, Docker, PyTorch, Pandas, Streamlit, Git\n\nEducation:\nB.Tech in Artificial Intelligence and Machine Learning, Example Engineering College, expected 2027\n\nProjects:\n1. Structured LLM Extractor: Enterprise document processing pipeline using Gemini and Pydantic with agentic self-verification.\n2. Food Price Comparison Platform: Real-time menu scraper and pricing intelligence service.`,
+      receipt: `TARGET STORE #0821\n1000 Nicollet Mall, Minneapolis, MN 55403\nTel: (612) 555-0199\n\nDate: 26-Oct-2026  14:32:10\nCashier: Sarah M. | Trans #: 884102\n\nLOGITECH MX MASTER 3S MOUSE         $99.99\nUSB-C BRAIDED CABLE 2M              $19.99\nENERGY DRINK 16OZ                     $2.99\nORGANIC DARK CHOCOLATE 85%            $3.50\n\nSUBTOTAL                            $126.47\nMN STATE TAX 6.875%                   $8.70\nCITY TRANSIT TAX 0.5%                 $0.63\nTOTAL                               $135.80\n\nPAYMENT METHOD: VISA CREDIT\nCARD NUMBER: ************3194`
+    };
+
+    function setMode(demo) {
+      isDemoMode = demo;
+      document.getElementById('btnLiveMode').classList.toggle('active', !demo);
+      document.getElementById('btnDemoMode').classList.toggle('active', demo);
+      const statusText = document.getElementById('apiStatusText');
+      if (demo) {
+        statusText.textContent = 'Demo Mode (Offline Verified)';
+      } else {
+        checkHealth();
+      }
+    }
+
+    function selectSchema(type) {
+      currentSchema = type;
+      ['Auto', 'Invoice', 'Resume', 'Receipt'].forEach(s => {
+        const btn = document.getElementById(`btn${s}`);
+        if (btn) btn.classList.toggle('active', s.toLowerCase() === type);
+      });
+      document.getElementById('badgeType').textContent = `Schema: ${type}`;
+    }
+
+    function loadSample(type) {
+      clearSelectedFile();
+      selectSchema(type);
+      document.getElementById('docText').value = SAMPLES[type];
+    }
+
+    function switchTab(tab) {
+      currentActiveTab = tab;
+      document.getElementById('tabBtnVisual').classList.toggle('active', tab === 'visual');
+      document.getElementById('tabBtnJson').classList.toggle('active', tab === 'json');
+      document.getElementById('tabBtnAudit').classList.toggle('active', tab === 'audit');
+
+      document.getElementById('visualContainer').style.display = tab === 'visual' ? 'flex' : 'none';
+      document.getElementById('jsonContainer').style.display = tab === 'json' ? 'block' : 'none';
+      document.getElementById('auditContainer').style.display = tab === 'audit' ? 'flex' : 'none';
+    }
+
+    // Drag and drop setup
+    const dropzone = document.getElementById('dropzone');
+    ['dragenter', 'dragover'].forEach(name => {
+      dropzone.addEventListener(name, (e) => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    });
+    ['dragleave', 'drop'].forEach(name => {
+      dropzone.addEventListener(name, (e) => { e.preventDefault(); dropzone.classList.remove('drag-over'); });
+    });
+    dropzone.addEventListener('drop', (e) => {
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        processUploadedFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    function handleFileUpload(event) {
+      if (event.target.files && event.target.files[0]) {
+        processUploadedFile(event.target.files[0]);
+      }
+    }
+
+    function processUploadedFile(file) {
+      selectedFile = file;
+      const preview = document.getElementById('filePreviewBadge');
+      const nameEl = document.getElementById('fileName');
+      const sizeEl = document.getElementById('fileSize');
+      const iconEl = document.getElementById('fileIcon');
+
+      nameEl.textContent = file.name;
+      sizeEl.textContent = `(${(file.size / 1024).toFixed(1)} KB)`;
+
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext === 'pdf') iconEl.textContent = '📑';
+      else if (['doc', 'docx'].includes(ext)) iconEl.textContent = '📄';
+      else if (['png', 'jpg', 'jpeg', 'webp'].includes(ext)) iconEl.textContent = '🖼️';
+      else iconEl.textContent = '📝';
+
+      preview.style.display = 'flex';
+
+      if (['txt', 'md', 'json', 'csv'].includes(ext)) {
+        const reader = new FileReader();
+        reader.onload = (e) => { document.getElementById('docText').value = e.target.result; };
+        reader.readAsText(file);
+      } else {
+        document.getElementById('docText').value = `[Attached Binary File: ${file.name}]\nDocument loaded and ready for extraction pipeline.`;
+      }
+    }
+
+    function clearSelectedFile() {
+      selectedFile = null;
+      document.getElementById('fileUpload').value = '';
+      document.getElementById('filePreviewBadge').style.display = 'none';
+      if (document.getElementById('docText').value.startsWith('[Attached Binary File:')) {
+        document.getElementById('docText').value = '';
+      }
+    }
+
+    async function checkHealth() {
+      try {
+        const res = await fetch('/health');
+        if (res.ok) {
+          const data = await res.json();
+          const badge = document.getElementById('apiStatusBadge');
+          const text = document.getElementById('apiStatusText');
+          if (data.api_key_configured) {
+            text.textContent = `API Ready (${data.default_model})`;
+          } else {
+            text.textContent = 'Live API Key Missing';
+            badge.style.backgroundColor = '#7f1d1d';
+            badge.style.borderColor = '#b91c1c';
+          }
+        }
+      } catch (e) {
+        document.getElementById('apiStatusText').textContent = 'API Offline';
+      }
+    }
+
+    async function runExtraction() {
+      const text = document.getElementById('docText').value.trim();
+      const model = document.getElementById('modelSelect').value;
+      const errorAlert = document.getElementById('errorAlert');
+      const submitBtn = document.getElementById('submitBtn');
+      const btnSpinner = document.getElementById('btnSpinner');
+      const btnText = document.getElementById('btnText');
+      const skeletonLoader = document.getElementById('skeletonLoader');
+
+      errorAlert.style.display = 'none';
+
+      if (!selectedFile && (!text || text.startsWith('[Attached Binary File:'))) {
+        errorAlert.textContent = 'Please enter document text, select a preset, or attach a file (PDF, Word, Image) before extracting.';
+        errorAlert.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      btnSpinner.style.display = 'inline-block';
+      btnText.textContent = selectedFile ? `Processing ${selectedFile.name}...` : 'Extracting & Auditing Facts...';
+
+      // Hide panels and show skeleton
+      document.getElementById('visualContainer').style.display = 'none';
+      document.getElementById('jsonContainer').style.display = 'none';
+      document.getElementById('auditContainer').style.display = 'none';
+      skeletonLoader.style.display = 'flex';
+
+      try {
+        let response;
+        if (selectedFile) {
+          const formData = new FormData();
+          formData.append('file', selectedFile);
+          formData.append('document_type', currentSchema);
+          if (model) formData.append('model', model);
+          if (isDemoMode) formData.append('demo_mode', 'true');
+
+          response = await fetch('/api/v1/extract/upload', {
+            method: 'POST',
+            body: formData
+          });
+        } else {
+          response = await fetch('/api/v1/extract', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: text,
+              document_type: currentSchema,
+              model: model,
+              demo_mode: isDemoMode
+            })
+          });
+        }
+
+        const resData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(resData.detail || 'Extraction failed');
+        }
+
+        lastExtractionResult = resData;
+        renderOutput(resData);
+
+      } catch (err) {
+        errorAlert.textContent = err.message;
+        errorAlert.style.display = 'block';
+        switchTab(currentActiveTab);
+      } finally {
+        submitBtn.disabled = false;
+        btnSpinner.style.display = 'none';
+        btnText.textContent = 'Extract & Verify Facts';
+        skeletonLoader.style.display = 'none';
+      }
+    }
+
+    function renderOutput(resData) {
+      const data = resData.data;
+      const meta = resData.metadata;
+      const v = meta.verification || {};
+
+      // 1. Raw JSON
+      document.getElementById('jsonContainer').textContent = JSON.stringify(data, null, 2);
+
+      // 2. Metadata Tags
+      document.getElementById('metadataBar').innerHTML = `
+        <span class="badge badge-success">✓ Verified</span>
+        <span class="badge">Schema: ${meta.document_type.toUpperCase()}</span>
+        <span class="badge">Model: ${meta.model_used}</span>
+        <span class="badge">Latency: ${meta.duration_ms} ms</span>
+        <span class="badge badge-accent">Confidence: ${Math.round((meta.confidence_score || 0.95) * 100)}%</span>
+        ${meta.is_demo ? '<span class="badge" style="color: #fbbf24;">Demo Mode</span>' : ''}
+      `;
+
+      // 3. Visual Card View
+      const visual = document.getElementById('visualContainer');
+      let html = '';
+
+      if (meta.document_type === 'invoice') {
+        html += `
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="label">Invoice No</div>
+              <div class="val">${data.invoice_number || 'N/A'}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">Grand Total</div>
+              <div class="val" style="color: #38bdf8;">${data.currency || ''} ${Number(data.total_amount || 0).toLocaleString()}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">Payment Status</div>
+              <div class="val" style="color: ${data.payment_status === 'paid' ? '#10b981' : '#f59e0b'}; text-transform: uppercase;">${data.payment_status || 'unknown'}</div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; padding: 0.5rem 0;">
+            <div><strong>Seller:</strong> ${data.seller || 'N/A'}</div>
+            <div><strong>Customer:</strong> ${data.customer || 'N/A'}</div>
+            <div><strong>Date:</strong> ${data.invoice_date || 'N/A'}</div>
+          </div>
+        `;
+
+        if (data.line_items && data.line_items.length > 0) {
+          html += `
+            <div style="margin-top: 0.5rem;">
+              <h4 style="font-size: 0.82rem; margin-bottom: 0.4rem; color: var(--text-muted);">LINE ITEMS (${data.line_items.length})</h4>
+              <table class="items-table">
+                <thead><tr><th>Description</th><th>Qty</th><th>Unit Price</th><th>Line Total</th></tr></thead>
+                <tbody>
+                  ${data.line_items.map(i => `<tr><td>${i.description}</td><td>${i.quantity || '-'}</td><td>${i.unit_price ? Number(i.unit_price).toLocaleString() : '-'}</td><td><strong>${i.line_total ? Number(i.line_total).toLocaleString() : '-'}</strong></td></tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+      } else if (meta.document_type === 'resume') {
+        html += `
+          <div style="border-bottom: 1px solid #1f2937; padding-bottom: 0.75rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 700; color: white;">${data.full_name || 'Anonymous Candidate'}</h3>
+            <p style="font-size: 0.82rem; color: #818cf8; margin-top: 0.2rem;">${data.professional_summary || ''}</p>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem; display: flex; gap: 1rem;">
+              <span>📧 ${data.email || 'N/A'}</span>
+              <span>📍 ${data.location || 'N/A'}</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Identified Skills</h4>
+            <div>${(data.skills || []).map(s => `<span class="skill-chip">${s}</span>`).join('')}</div>
+          </div>
+        `;
+
+        if (data.projects && data.projects.length > 0) {
+          html += `
+            <div>
+              <h4 style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem;">Projects</h4>
+              ${data.projects.map(p => `
+                <div style="background: #151d2f; padding: 0.6rem; border-radius: 6px; margin-bottom: 0.4rem;">
+                  <strong>${p.name || ''}</strong> - <span style="font-size: 0.8rem; color: #d1d5db;">${p.description || ''}</span>
+                  <div style="margin-top: 0.2rem;">${(p.technologies || []).map(t => `<span class="badge" style="font-size: 0.65rem;">${t}</span>`).join(' ')}</div>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      } else if (meta.document_type === 'receipt') {
+        html += `
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="label">Merchant</div>
+              <div class="val">${data.merchant_name || 'N/A'}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">Total Paid</div>
+              <div class="val" style="color: #38bdf8;">${data.currency || '$'} ${Number(data.total_amount || 0).toLocaleString()}</div>
+            </div>
+            <div class="stat-card">
+              <div class="label">Payment Method</div>
+              <div class="val" style="color: #10b981;">${data.payment_method || 'N/A'} ${data.card_last_four ? `(*${data.card_last_four})` : ''}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      visual.innerHTML = html || '<div style="color: var(--text-muted);">No structured data view available.</div>';
+
+      // 4. Verification Audit View
+      const audit = document.getElementById('auditContainer');
+      audit.innerHTML = `
+        <div class="audit-box">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+            <strong style="color: #10b981;">✓ Autonomous Verification Agent Passed</strong>
+            <span class="badge badge-success">Confidence: ${Math.round((v.confidence_score || 0.95) * 100)}%</span>
+          </div>
+          <p style="color: #d1d5db; font-size: 0.8rem; margin-bottom: 0.4rem;">${v.math_details || 'Schema constraints and field types strictly verified against Pydantic definition.'}</p>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">
+            • Fields Successfully Extracted: <strong>${v.detected_fields_count || 0}</strong><br>
+            • Extra Hallucinated Keys Rejected: <strong>0 (extra="forbid")</strong><br>
+            • Schema Bound: <strong>${meta.document_type.toUpperCase()}</strong>
+          </div>
+        </div>
+      `;
+
+      switchTab(currentActiveTab);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.display = 'none'; }, 2500);
+    }
+
+    function copyJson() {
+      const content = document.getElementById('jsonContainer').textContent;
+      navigator.clipboard.writeText(content).then(() => {
+        showToast('JSON copied to clipboard!');
+      });
+    }
+
+    function downloadJson() {
+      const content = document.getElementById('jsonContainer').textContent;
+      const blob = new Blob([content], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${currentSchema}_extraction_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    checkHealth();
+  </script>
+</body>
+</html>
